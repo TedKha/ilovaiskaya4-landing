@@ -16,50 +16,152 @@
       background-color: #fff;
       color: #1a1a1a;
       line-height: 1.6;
-      overflow-x: hidden; /* Предотвращает горизонтальную прокрутку от снега */
+      overflow-x: hidden;
     }
 
-    /* --- НОВОГОДНЯЯ ГИРЛЯНДА --- */
-    .garland {
-      display: flex;
-      justify-content: space-evenly;
+    /* --- НОВОГОДНЯЯ ГИРЛЯНДА С ПРОВЕСОМ --- */
+    .garland-container {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      padding: 0 5px;
+      height: 80px;
       pointer-events: none;
       z-index: 10;
+      overflow: hidden;
     }
 
-    .garland::before {
-      content: '';
-      position: absolute;
-      top: 6px;
-      left: 0;
+    .garland-svg {
       width: 100%;
-      height: 2px;
-      background: #2c3e50;
-      z-index: -1;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      height: 100%;
     }
 
-    .bulb {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      margin-top: 4px;
-      animation: glow 1.5s infinite alternate;
+    .garland-wire {
+      fill: none;
+      stroke: #2d5016;
+      stroke-width: 2;
     }
 
-    .bulb:nth-child(4n+1) { background-color: #ff4444; box-shadow: 0 0 8px #ff4444, 0 0 15px #ff4444; animation-delay: 0s; }
-    .bulb:nth-child(4n+2) { background-color: #44ff44; box-shadow: 0 0 8px #44ff44, 0 0 15px #44ff44; animation-delay: 0.3s; }
-    .bulb:nth-child(4n+3) { background-color: #ffdd44; box-shadow: 0 0 8px #ffdd44, 0 0 15px #ffdd44; animation-delay: 0.6s; }
-    .bulb:nth-child(4n+4) { background-color: #4488ff; box-shadow: 0 0 8px #4488ff, 0 0 15px #4488ff; animation-delay: 0.9s; }
+    .garland-bulb {
+      animation: bulbGlow 1.5s infinite alternate;
+    }
 
-    @keyframes glow {
-      0% { opacity: 0.4; transform: scale(0.85); }
-      100% { opacity: 1; transform: scale(1.15); }
+    .bulb-red { fill: #ff3b3b; filter: drop-shadow(0 0 6px #ff3b3b); }
+    .bulb-green { fill: #3bff3b; filter: drop-shadow(0 0 6px #3bff3b); }
+    .bulb-yellow { fill: #ffd700; filter: drop-shadow(0 0 6px #ffd700); }
+    .bulb-blue { fill: #3b9bff; filter: drop-shadow(0 0 6px #3b9bff); }
+
+    .bulb-red, .bulb-green, .bulb-yellow, .bulb-blue {
+      animation-duration: 1.2s;
+    }
+
+    .bulb-red { animation-delay: 0s; }
+    .bulb-green { animation-delay: 0.3s; }
+    .bulb-yellow { animation-delay: 0.6s; }
+    .bulb-blue { animation-delay: 0.9s; }
+
+    @keyframes bulbGlow {
+      0% { opacity: 0.5; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* --- ТРАКТОР С КОВШОМ --- */
+    .tractor {
+      position: fixed;
+      bottom: 20px;
+      width: 120px;
+      height: 80px;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .tractor.active {
+      opacity: 1;
+    }
+
+    .tractor svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .tractor.moving-right {
+      animation: moveRight 15s linear forwards;
+    }
+
+    .tractor.moving-left {
+      animation: moveLeft 15s linear forwards;
+      transform: scaleX(-1);
+    }
+
+    @keyframes moveRight {
+      0% { left: -150px; }
+      100% { left: calc(100vw + 150px); }
+    }
+
+    @keyframes moveLeft {
+      0% { right: -150px; left: auto; }
+      100% { right: calc(100vw + 150px); left: auto; }
+    }
+
+    /* --- ЧЕЛОВЕЧЕК С ЛОПАТОЙ (УМЕНЬШЕН НА 40%) --- */
+    .worker {
+      position: fixed;
+      bottom: 20px;
+      width: 36px;
+      height: 60px;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .worker.active {
+      opacity: 1;
+    }
+
+    .worker svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .worker.moving-right {
+      animation: workerMoveRight 20s linear forwards;
+    }
+
+    .worker.moving-left {
+      animation: workerMoveLeft 20s linear forwards;
+      transform: scaleX(-1);
+    }
+
+    @keyframes workerMoveRight {
+      0% { left: -80px; }
+      100% { left: calc(100vw + 80px); }
+    }
+
+    @keyframes workerMoveLeft {
+      0% { right: -80px; left: auto; }
+      100% { right: calc(100vw + 80px); left: auto; }
+    }
+
+    .worker-shovel {
+      animation: digSnow 0.8s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    @keyframes digSnow {
+      0%, 100% { transform: rotate(-15deg); }
+      50% { transform: rotate(15deg); }
+    }
+
+    .worker-legs {
+      animation: walk 0.4s ease-in-out infinite;
+    }
+
+    @keyframes walk {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(2px); }
     }
 
     /* --- ПАДАЮЩИЙ СНЕГ --- */
@@ -70,7 +172,7 @@
       text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
       animation: fall linear infinite;
       z-index: 9999;
-      pointer-events: none; /* Снег не мешает кликам */
+      pointer-events: none;
       user-select: none;
     }
 
@@ -95,7 +197,7 @@
 
     header {
       background: #f5f5f5;
-      padding: 35px 0 20px 0; /* Увеличен верхний отступ для гирлянды */
+      padding: 35px 0 20px 0;
       text-align: center;
       border-bottom: 1px solid #e0e0e0;
       position: relative;
@@ -339,7 +441,7 @@
         width: 100%;
         max-width: 400px;
         padding: 18px 30px;
-        font-size: 20px;
+        font-size: 18px;
       }
 
       .btn-partner {
@@ -364,21 +466,48 @@
       .partner-title {
         font-size: 20px;
       }
-      
-      .bulb {
-        width: 10px;
-        height: 10px;
+
+      .tractor {
+        transform: scale(0.7);
       }
     }
-  each</style>
+  </style>
 </head>
 <body>
   <header>
-    <!-- Новогодняя гирлянда -->
-    <div class="garland" id="garland">
-      <!-- Лампочки будут сгенерированы JS для идеального распределения -->
+    <!-- Новогодняя гирлянда с провесом -->
+    <div class="garland-container">
+      <svg class="garland-svg" viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <path class="garland-wire" d="M 0,10 Q 150,50 300,10" />
+        <path class="garland-wire" d="M 300,10 Q 450,50 600,10" />
+        <path class="garland-wire" d="M 600,10 Q 750,50 900,10" />
+        <path class="garland-wire" d="M 900,10 Q 1050,50 1200,10" />
+
+        <circle class="garland-bulb bulb-red" cx="75" cy="45" r="6" />
+        <circle class="garland-bulb bulb-green" cx="150" cy="50" r="6" />
+        <circle class="garland-bulb bulb-yellow" cx="225" cy="45" r="6" />
+
+        <circle class="garland-bulb bulb-blue" cx="375" cy="45" r="6" />
+        <circle class="garland-bulb bulb-red" cx="450" cy="50" r="6" />
+        <circle class="garland-bulb bulb-green" cx="525" cy="45" r="6" />
+
+        <circle class="garland-bulb bulb-yellow" cx="675" cy="45" r="6" />
+        <circle class="garland-bulb bulb-blue" cx="750" cy="50" r="6" />
+        <circle class="garland-bulb bulb-red" cx="825" cy="45" r="6" />
+
+        <circle class="garland-bulb bulb-green" cx="975" cy="45" r="6" />
+        <circle class="garland-bulb bulb-yellow" cx="1050" cy="50" r="6" />
+        <circle class="garland-bulb bulb-blue" cx="1125" cy="45" r="6" />
+
+        <text x="50" y="20" font-size="20">🌲</text>
+        <text x="250" y="18" font-size="18">🎄</text>
+        <text x="450" y="20" font-size="20">🌲</text>
+        <text x="650" y="18" font-size="18">🎄</text>
+        <text x="850" y="20" font-size="20">🌲</text>
+        <text x="1050" y="18" font-size="18">🎄</text>
+      </svg>
     </div>
-    
+
     <div class="container">
       <h1>Иловайская улица, дом 4</h1>
       <p>Москва, м.р. Люблино, 109652</p>
@@ -389,10 +518,10 @@
     <div class="container">
       <h2>Сообщество собственников дома № 4</h2>
       <p>Создано жильцами — для жильцов. Без рекламы, ботов и продажи персональных данных.</p>
-      
+
       <div class="buttons">
         <a href="https://t.me/+idJzwy023lAwZWEy" class="btn btn-primary">Присоединиться к Telegram</a>
-        <a href="https://vk.com/your_vk_community" class="btn btn-vk">Чат ВКонтакте</a>
+        <a href="https://vk.ru/ilovaiskaya4" class="btn btn-vk">Чат ВКонтакте</a>
         <a href="https://max.ru/join/NdKbZFQIV-S1m3u0m8nMhuQYIFC06JvWaSR1wSqXu9A" class="btn btn-max">Добавиться в MAX</a>
       </div>
 
@@ -446,46 +575,136 @@
     </div>
   </footer>
 
-  <!-- Скрипт для генерации снега и гирлянды -->
-  <script>
-    // 1. Генерация гирлянды в шапке
-    const garland = document.getElementById('garland');
-    const screenWidth = window.innerWidth;
-    const bulbCount = Math.floor(screenWidth / 30); // Одна лампочка на каждые 30px ширины
-    
-    for (let i = 0; i < bulbCount; i++) {
-      const bulb = document.createElement('div');
-      bulb.className = 'bulb';
-      garland.appendChild(bulb);
-    }
+  <!-- Трактор-снегоуборщик С КОВШОМ -->
+  <div class="tractor" id="tractor">
+    <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+      <!-- Корпус трактора (жёлтый) -->
+      <rect x="35" y="25" width="55" height="35" fill="#fdd835" rx="3"/>
+      <!-- Кабина -->
+      <rect x="55" y="15" width="25" height="25" fill="#f9a825" rx="2"/>
+      <rect x="60" y="20" width="15" height="12" fill="#81d4fa"/>
 
-    // 2. Генерация падающего снега
+      <!-- Рычаг ковша -->
+      <path d="M 35 35 L 15 35 L 15 45 L 35 45 Z" fill="#555"/>
+      <!-- Ковш -->
+      <path d="M 15 35 L 5 55 L 30 60 L 35 45 Z" fill="#757575" stroke="#424242" stroke-width="2"/>
+      <!-- Зубья ковша -->
+      <path d="M 5 55 L 7 62 L 10 56" fill="none" stroke="#424242" stroke-width="2"/>
+      <path d="M 12 57 L 14 64 L 17 58" fill="none" stroke="#424242" stroke-width="2"/>
+      <path d="M 19 58 L 21 65 L 24 59" fill="none" stroke="#424242" stroke-width="2"/>
+
+      <!-- Колёса -->
+      <circle cx="45" cy="65" r="12" fill="#212121"/>
+      <circle cx="45" cy="65" r="6" fill="#757575"/>
+      <circle cx="75" cy="65" r="12" fill="#212121"/>
+      <circle cx="75" cy="65" r="6" fill="#757575"/>
+
+      <!-- Фара -->
+      <circle cx="30" cy="30" r="4" fill="#fff59d">
+        <animate attributeName="opacity" values="1;0.5;1" dur="0.5s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Снег летит из ковша -->
+      <circle cx="10" cy="65" r="2" fill="#fff" opacity="0.7">
+        <animate attributeName="cy" values="65;75" dur="0.3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.7;0" dur="0.3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="15" cy="68" r="1.5" fill="#fff" opacity="0.6">
+        <animate attributeName="cy" values="68;78" dur="0.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0" dur="0.4s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+
+  <!-- Человечек с лопатой (УМЕНЬШЕН НА 40%) -->
+  <div class="worker" id="worker">
+    <svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="15" r="8" fill="#ffdbac"/>
+      <path d="M 22 12 Q 30 5 38 12 L 38 8 Q 30 2 22 8 Z" fill="#ffd700"/>
+      <rect x="22" y="23" width="16" height="25" fill="#ffd700" rx="2"/>
+      <rect x="24" y="25" width="12" height="2" fill="#fff" opacity="0.5"/>
+      <rect x="24" y="35" width="12" height="2" fill="#fff" opacity="0.5"/>
+      <rect x="15" y="25" width="6" height="18" fill="#ffdbac" rx="2"/>
+      <rect x="39" y="25" width="6" height="18" fill="#ffdbac" rx="2"/>
+      <g class="worker-shovel">
+        <rect x="8" y="40" width="3" height="25" fill="#8b4513"/>
+        <rect x="5" y="63" width="9" height="8" fill="#757575" rx="1"/>
+      </g>
+      <g class="worker-legs">
+        <rect x="24" y="48" width="5" height="22" fill="#1976d2" rx="2"/>
+        <rect x="31" y="48" width="5" height="22" fill="#1976d2" rx="2"/>
+        <ellipse cx="26" cy="72" rx="4" ry="3" fill="#212121"/>
+        <ellipse cx="34" cy="72" rx="4" ry="3" fill="#212121"/>
+      </g>
+    </svg>
+  </div>
+
+  <script>
+    // Генерация падающего снега
     const snowContainer = document.createElement('div');
     snowContainer.id = 'snow-container';
     document.body.appendChild(snowContainer);
 
-    const snowflakeCount = 60; // Количество снежинок (можно уменьшить до 30 или увеличить до 100)
-    
+    const snowflakeCount = 60;
+
     for (let i = 0; i < snowflakeCount; i++) {
       const flake = document.createElement('div');
       flake.className = 'snowflake';
       flake.innerHTML = '❄';
-      
-      // Случайные параметры для каждой снежинки
-      const startX = Math.random() * 100; // Позиция по горизонтали (vw)
-      const duration = Math.random() * 5 + 3; // Скорость падения от 3 до 8 секунд
-      const delay = Math.random() * 5; // Задержка перед началом
-      const size = Math.random() * 12 + 8; // Размер от 8px до 20px
-      const opacity = Math.random() * 0.6 + 0.4; // Прозрачность
-      
+
+      const startX = Math.random() * 100;
+      const duration = Math.random() * 5 + 3;
+      const delay = Math.random() * 5;
+      const size = Math.random() * 12 + 8;
+      const opacity = Math.random() * 0.6 + 0.4;
+
       flake.style.left = startX + 'vw';
       flake.style.animationDuration = duration + 's';
       flake.style.animationDelay = delay + 's';
       flake.style.fontSize = size + 'px';
       flake.style.opacity = opacity;
-      
+
       snowContainer.appendChild(flake);
     }
+
+    // Анимация трактора и человечка
+    const tractor = document.getElementById('tractor');
+    const worker = document.getElementById('worker');
+
+    function animateTractor() {
+      const direction = Math.random() > 0.5 ? 'right' : 'left';
+      tractor.classList.remove('moving-right', 'moving-left', 'active');
+
+      setTimeout(() => {
+        tractor.classList.add('active');
+        tractor.classList.add(`moving-${direction}`);
+
+        setTimeout(() => {
+          tractor.classList.remove('active', `moving-${direction}`);
+        }, 15000);
+      }, 100);
+
+      setTimeout(animateTractor, (Math.random() * 20000) + 20000);
+    }
+
+    function animateWorker() {
+      const direction = Math.random() > 0.5 ? 'right' : 'left';
+      worker.classList.remove('moving-right', 'moving-left', 'active');
+
+      setTimeout(() => {
+        worker.classList.add('active');
+        worker.classList.add(`moving-${direction}`);
+
+        setTimeout(() => {
+          worker.classList.remove('active', `moving-${direction}`);
+        }, 20000);
+      }, 100);
+
+      setTimeout(animateWorker, (Math.random() * 15000) + 15000);
+    }
+
+    setTimeout(animateTractor, 3000);
+    setTimeout(animateWorker, 8000);
   </script>
 </body>
 </html>
